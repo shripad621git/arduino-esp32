@@ -16,10 +16,12 @@
 #ifdef CONFIG_ESP_MATTER_ENABLE_DATA_MODEL
 
 #include <Matter.h>
+#include <MatterInternal.h>
 #include <app/server/Server.h>
 #include <MatterEndpoints/MatterHumiditySensor.h>
 
 using namespace esp_matter;
+using namespace matter_internal;
 using namespace esp_matter::endpoint;
 using namespace chip::app::Clusters;
 
@@ -41,8 +43,6 @@ MatterHumiditySensor::~MatterHumiditySensor() {
 }
 
 bool MatterHumiditySensor::begin(uint16_t _rawHumidity) {
-  ArduinoMatter::_init();
-
   if (getEndPointId() != 0) {
     log_e("Matter Humidity Sensor with Endpoint Id %d device has already been created.", getEndPointId());
     return false;
@@ -69,6 +69,10 @@ bool MatterHumiditySensor::begin(uint16_t _rawHumidity) {
   setEndPointId(endpoint::get_id(endpoint));
   log_i("Humidity Sensor created with endpoint_id %d", getEndPointId());
   started = true;
+  
+  // Start the Matter stack after all data model is created
+  start_matter_stack();
+  
   return true;
 }
 

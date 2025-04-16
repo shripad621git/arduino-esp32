@@ -18,22 +18,6 @@
 
 #include <Arduino.h>
 #include <esp_matter.h>
-#include <ColorFormat.h>
-#include <MatterEndpoints/MatterGenericSwitch.h>
-#include <MatterEndpoints/MatterOnOffLight.h>
-#include <MatterEndpoints/MatterDimmableLight.h>
-#include <MatterEndpoints/MatterColorTemperatureLight.h>
-#include <MatterEndpoints/MatterColorLight.h>
-#include <MatterEndpoints/MatterEnhancedColorLight.h>
-#include <MatterEndpoints/MatterFan.h>
-#include <MatterEndpoints/MatterTemperatureSensor.h>
-#include <MatterEndpoints/MatterHumiditySensor.h>
-#include <MatterEndpoints/MatterContactSensor.h>
-#include <MatterEndpoints/MatterPressureSensor.h>
-#include <MatterEndpoints/MatterOccupancySensor.h>
-#include <MatterEndpoints/MatterOnOffPlugin.h>
-#include <MatterEndpoints/MatterThermostat.h>
-
 using namespace esp_matter;
 
 class ArduinoMatter {
@@ -56,25 +40,6 @@ public:
 #endif
   static bool isDeviceConnected();
   static void decommission();
-
-  // list of Matter EndPoints Friend Classes
-  friend class MatterGenericSwitch;
-  friend class MatterOnOffLight;
-  friend class MatterDimmableLight;
-  friend class MatterColorTemperatureLight;
-  friend class MatterColorLight;
-  friend class MatterEnhancedColorLight;
-  friend class MatterFan;
-  friend class MatterTemperatureSensor;
-  friend class MatterHumiditySensor;
-  friend class MatterContactSensor;
-  friend class MatterPressureSensor;
-  friend class MatterOccupancySensor;
-  friend class MatterOnOffPlugin;
-  friend class MatterThermostat;
-
-protected:
-  static void _init();
 };
 
 extern ArduinoMatter Matter;

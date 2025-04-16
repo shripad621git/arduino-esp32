@@ -16,12 +16,14 @@
 #ifdef CONFIG_ESP_MATTER_ENABLE_DATA_MODEL
 
 #include <Matter.h>
+#include <MatterInternal.h>
 #include <app/server/Server.h>
 #include <MatterEndpoints/MatterOnOffLight.h>
 
 using namespace esp_matter;
 using namespace esp_matter::endpoint;
 using namespace chip::app::Clusters;
+using namespace matter_internal;
 
 bool MatterOnOffLight::attributeChangeCB(uint16_t endpoint_id, uint32_t cluster_id, uint32_t attribute_id, esp_matter_attr_val_t *val) {
   bool ret = true;
@@ -58,8 +60,6 @@ MatterOnOffLight::~MatterOnOffLight() {
 }
 
 bool MatterOnOffLight::begin(bool initialState) {
-  ArduinoMatter::_init();
-
   if (getEndPointId() != 0) {
     log_e("Matter On-Off Light with Endpoint Id %d device has already been created.", getEndPointId());
     return false;
@@ -80,6 +80,10 @@ bool MatterOnOffLight::begin(bool initialState) {
   setEndPointId(endpoint::get_id(endpoint));
   log_i("On-Off Light created with endpoint_id %d", getEndPointId());
   started = true;
+  
+  // Start the Matter stack after all data model is created
+  start_matter_stack();
+  
   return true;
 }
 

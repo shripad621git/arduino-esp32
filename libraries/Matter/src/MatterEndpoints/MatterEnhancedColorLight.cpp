@@ -16,10 +16,12 @@
 #ifdef CONFIG_ESP_MATTER_ENABLE_DATA_MODEL
 
 #include <Matter.h>
+#include <MatterInternal.h>
 #include <app/server/Server.h>
 #include <MatterEndpoints/MatterEnhancedColorLight.h>
 
 using namespace esp_matter;
+using namespace matter_internal;
 using namespace esp_matter::endpoint;
 using namespace chip::app::Clusters;
 
@@ -177,8 +179,6 @@ MatterEnhancedColorLight::~MatterEnhancedColorLight() {
 }
 
 bool MatterEnhancedColorLight::begin(bool initialState, espHsvColor_t _colorHSV, uint8_t brightness, uint16_t ColorTemperature) {
-  ArduinoMatter::_init();
-
   if (getEndPointId() != 0) {
     log_e("Matter Enhanced ColorLight with Endpoint Id %d device has already been created.", getEndPointId());
     return false;
@@ -218,6 +218,10 @@ bool MatterEnhancedColorLight::begin(bool initialState, espHsvColor_t _colorHSV,
   attribute::set_deferred_persistence(current_level_attribute);
 
   started = true;
+  
+  // Start the Matter stack after all data model is created
+  start_matter_stack();
+  
   return true;
 }
 

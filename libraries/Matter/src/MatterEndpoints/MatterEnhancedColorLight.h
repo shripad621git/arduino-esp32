@@ -18,6 +18,7 @@
 
 #include <Matter.h>
 #include <MatterEndPoint.h>
+#include <ColorFormat.h>
 
 class MatterEnhancedColorLight : public MatterEndPoint {
 public:

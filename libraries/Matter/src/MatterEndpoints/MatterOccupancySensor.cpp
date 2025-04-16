@@ -16,10 +16,12 @@
 #ifdef CONFIG_ESP_MATTER_ENABLE_DATA_MODEL
 
 #include <Matter.h>
+#include <MatterInternal.h>
 #include <app/server/Server.h>
 #include <MatterEndpoints/MatterOccupancySensor.h>
 
 using namespace esp_matter;
+using namespace matter_internal;
 using namespace esp_matter::endpoint;
 using namespace chip::app::Clusters;
 
@@ -50,8 +52,6 @@ MatterOccupancySensor::~MatterOccupancySensor() {
 }
 
 bool MatterOccupancySensor::begin(bool _occupancyState, OccupancySensorType_t _occupancySensorType) {
-  ArduinoMatter::_init();
-
   if (getEndPointId() != 0) {
     log_e("Matter Occupancy Sensor with Endpoint Id %d device has already been created.", getEndPointId());
     return false;
@@ -72,6 +72,10 @@ bool MatterOccupancySensor::begin(bool _occupancyState, OccupancySensorType_t _o
   setEndPointId(endpoint::get_id(endpoint));
   log_i("Occupancy Sensor created with endpoint_id %d", getEndPointId());
   started = true;
+  
+  // Start the Matter stack after all data model is created
+  start_matter_stack();
+  
   return true;
 }
 

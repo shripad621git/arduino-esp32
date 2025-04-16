@@ -18,7 +18,7 @@
 
 #include <Matter.h>
 #include <MatterEndPoint.h>
-
+#include <ColorFormat.h>
 class MatterColorTemperatureLight : public MatterEndPoint {
 public:
   static const uint8_t MAX_BRIGHTNESS = 255;
